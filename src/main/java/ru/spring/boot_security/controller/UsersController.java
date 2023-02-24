@@ -9,7 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/")
 public class UsersController {
 
     private final UserService userDAO;
@@ -24,13 +24,29 @@ public class UsersController {
         return "users/index";
     }
 
+    @GetMapping("/admin")
+    public String adminPage() {
+        return "admin";
+    }
+
+    @GetMapping("/user")
+    public String userPage() {
+        return "user";
+    }
+
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
         model.addAttribute("user", userDAO.showUser(id));
         return "users/show";
     }
 
-    @GetMapping("/new")
+    @GetMapping("/admin/{id}")
+    public String showForAdmin(@PathVariable("id") int id, Model model) {
+        model.addAttribute("user", userDAO.showUser(id));
+        return "users/show";
+    }
+
+    @GetMapping("/admin/new")
     public String newUser(@ModelAttribute("user") User user) {
         return "users/new";
     }
@@ -42,19 +58,19 @@ public class UsersController {
             return "users/new";
 
         userDAO.saveUser(user);
-        return "redirect:/users";
+        return "redirect:/";
     }
 
-    @GetMapping("/{id}/edit")
+    @GetMapping("/admin/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
         model.addAttribute("user", userDAO.showUser(id));
         return "users/edit";
     }
 
-    @PostMapping("/delete/{id}")
+    @PostMapping("/admin/delete/{id}")
     public String delete(@PathVariable("id") int id) {
         userDAO.deleteUser(id);
-        return "redirect:/users";
+        return "redirect:/";
     }
 
     @PostMapping("/{id}")
@@ -64,6 +80,6 @@ public class UsersController {
             return "users/edit";
 
         userDAO.updateUser(id, user);
-        return "redirect:/users";
+        return "redirect:/";
     }
 }

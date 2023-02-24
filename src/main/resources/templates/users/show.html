@@ -9,9 +9,9 @@
 <p th:text="${'Email: ' + user.getEmail()}">VALUE</p>
 <p th:text="${user.getId()}">VALUE</p>
 
-<a th:href="@{/users/{id}/edit(id=${user.getId()})}">Edit</a>
+<a th:href="@{/admin/{id}/edit(id=${user.getId()})}">Edit</a>
 
-<form th:method="POST" th:action="@{/users/delete/{id}(id=${user.getId()})}">
+<form th:method="POST" th:action="@{/admin/delete/{id}(id=${user.getId()})}">
     <input type="submit" value="Delete"/>
 </form>
 
