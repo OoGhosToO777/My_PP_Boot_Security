@@ -21,7 +21,7 @@ public class UsersController {
     @GetMapping()
     public String index(Model model) {
         model.addAttribute("users", userDAO.showAllUsers());
-        return "users/index";
+        return "security";
     }
 
     @GetMapping("/admin")
