@@ -89,10 +89,22 @@
                       <label for="exampleInputPassword1" class="form-label">Password</label>
                       <input type="password" class="form-control" th:field="*{password}" id="exampleInputPassword1">
                   </div>
-                  <select class="form-select" multiple aria-label="multiple select example">
-                      <option selected>USER</option>
-                      <option value="1">ADMIN</option>
-                  </select>
+                  <div class="form-group">
+
+                      <label class="col-form-label" for="roleAdd">Role</label>
+
+                      <select class="custom-select form-control" multiple name="roles" th:field="*{userRoles}" id="roleAdd">
+
+                          <option th:each="oneRole: ${roles}"
+                                  th:selected="${oneRole.roleName == 'USER'}"
+                                  th:text="${oneRole.roleName}"
+                                  th:value="${oneRole.roleId}"
+                          >all roles
+                          </option>
+
+                      </select>
+
+                  </div>
                   <button type="submit" class="btn btn-primary">Add new user</button>
               </form>
           </div>

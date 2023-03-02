@@ -2,6 +2,7 @@ package ru.spring.boot_security.controller;
 
 
 import ru.spring.boot_security.model.User;
+import ru.spring.boot_security.service.RoleService;
 import ru.spring.boot_security.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,15 +13,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class UsersController {
 
-    private final UserService userDAO;
+    private final UserService userService;
+    private final RoleService roleService;
 
-    public UsersController(UserService userDAO) {
-        this.userDAO = userDAO;
+    public UsersController(UserService userService, RoleService roleService) {
+        this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping()
     public String index(Model model, @ModelAttribute("user") User user) {
-        model.addAttribute("users", userDAO.showAllUsers());
+        model.addAttribute("users", userService.showAllUsers());
+        model.addAttribute("roles", roleService.showAllRoles());
         return "security";
     }
 
@@ -31,19 +35,19 @@ public class UsersController {
 
     @GetMapping("/user")
     public String userPage(Model model) {
-        model.addAttribute("users", userDAO.showAllUsers());
+        model.addAttribute("users", userService.showAllUsers());
         return "user";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userDAO.showUser(id));
+        model.addAttribute("user", userService.showUser(id));
         return "users/show";
     }
 
     @GetMapping("/admin/{id}")
     public String showForAdmin(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userDAO.showUser(id));
+        model.addAttribute("user", userService.showUser(id));
         return "users/show";
     }
 
@@ -58,19 +62,19 @@ public class UsersController {
         if (bindingResult.hasErrors())
             return "users/new";
 
-        userDAO.saveUser(user);
+        userService.saveUser(user);
         return "redirect:/";
     }
 
     @GetMapping("/admin/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", userDAO.showUser(id));
+        model.addAttribute("user", userService.showUser(id));
         return "users/edit";
     }
 
     @PostMapping("/admin/delete/{id}")
     public String delete(@PathVariable("id") int id) {
-        userDAO.deleteUser(id);
+        userService.deleteUser(id);
         return "redirect:/";
     }
 
@@ -80,7 +84,7 @@ public class UsersController {
         if (bindingResult.hasErrors())
             return "users/edit";
 
-        userDAO.updateUser(id, user);
+        userService.updateUser(id, user);
         return "redirect:/";
     }
 }
