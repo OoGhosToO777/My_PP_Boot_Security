@@ -6,4 +6,8 @@
     .navbar{
         width: 15%;
     }
+
+    li {
+        background-color: #0f5132;
+    }
 }

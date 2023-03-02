@@ -19,7 +19,7 @@ public class UsersController {
     }
 
     @GetMapping()
-    public String index(Model model) {
+    public String index(Model model, @ModelAttribute("user") User user) {
         model.addAttribute("users", userDAO.showAllUsers());
         return "security";
     }
@@ -30,7 +30,8 @@ public class UsersController {
     }
 
     @GetMapping("/user")
-    public String userPage() {
+    public String userPage(Model model) {
+        model.addAttribute("users", userDAO.showAllUsers());
         return "user";
     }
 
