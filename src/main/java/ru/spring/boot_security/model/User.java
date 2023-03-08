@@ -105,7 +105,8 @@ public class User implements UserDetails {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                '}' + "\r\n";
+                ", userRoles=" + userRoles +
+                '}';
     }
 
     @Override

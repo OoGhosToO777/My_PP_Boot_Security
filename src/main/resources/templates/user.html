@@ -22,7 +22,33 @@
 </head>
 <body>
 <header>
-    <div th:replace="parts/header :: header"/>
+    <!--      Header-->
+    <nav class="navbar navbar-expand-lg" style="background-color: #343a40;">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent" th:each="user : ${authenticationUser}">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 white-text">
+                    <li class="nav-item">
+                        <a class="nav-link" style="font-weight: bold;" th:text="${user.getEmail()}">
+                            *UserEmail*
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">
+                            with roles:
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${user.getUserRoles()}">
+                            *ListRoles*
+                        </a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <a class="link-secondary" href="/logout" role="button">Logout</a>
+                </form>
+            </div>
+        </div>
+    </nav>
 </header>
 <section>
     <div class="row">
@@ -61,17 +87,23 @@
 </section>
 
 
-<div sec:authorize="isAuthenticated()">
-    This content is only shown to authenticated users.
+<div th:each="user : ${authenticationUser}">
+    <div sec:authorize="isAuthenticated()">
+        This content is only shown to authenticated users.
+    </div>
+    <div  sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${user.getUserRoles().contains('ADMIN')} ? 'active' : ''">
+        This content is only shown to administrators.
+    </div>
+    <div th:classappend="${user.getUserRoles().contains('ROLE_ADMIN')} ? 'active' : ''">
+        This content is only shown to administrators Two.
+    </div>
+    <div sec:authorize="hasRole('ADMIN')" th:classappend="${user.getUserRoles().contains('ADMIN')} ? 'active' : ''">
+        This content is only shown to administrators Three.
+    </div>
+    <div sec:authorize="hasRole('ROLE_USER')">
+        This content is only shown to users.
+    </div>
 </div>
-<div sec:authorize="hasRole('ROLE_ADMIN')">
-    This content is only shown to administrators.
-</div>
-<div sec:authorize="hasRole('ROLE_USER')">
-    This content is only shown to users.
-</div>
-Logged user: <span sec:authentication="name">Bob</span>
-Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
 
 </div>
 

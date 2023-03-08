@@ -1,5 +1,6 @@
 package ru.spring.boot_security.service;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import ru.spring.boot_security.dao.UserRepository;
 import ru.spring.boot_security.model.User;
 import org.springframework.stereotype.Service;
@@ -46,5 +47,11 @@ public class UserServiceImpl implements UserService{
     public void deleteUser(int id) {
         LOGGER.info("deleteUser");
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public User findUserByUsername(String userName) {
+        return userRepository.findUserByUsername(userName)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("User with user name: %s not found", userName)));
     }
 }

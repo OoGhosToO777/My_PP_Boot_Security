@@ -9,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Persistence;
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/")
 public class UsersController {
@@ -22,9 +25,19 @@ public class UsersController {
     }
 
     @GetMapping()
-    public String index(Model model, @ModelAttribute("user") User user) {
+    public String index(Model model, @ModelAttribute("user") User user, Principal principal) {
         model.addAttribute("users", userService.showAllUsers());
         model.addAttribute("roles", roleService.showAllRoles());
+        User userAuth = userService.findUserByUsername(principal.getName());
+        boolean test = userAuth.getUserRoles().contains("ADMIN");
+        boolean test2 = userAuth.getUserRoles().contains("ROLE_ADMIN");
+        boolean test3 = userAuth.getUserRoles().contains("USER");
+        boolean test4 = userAuth.getUserRoles().contains("ROLE_USER");
+        System.out.println(test);
+        System.out.println(test2);
+        System.out.println(test3);
+        System.out.println(test4);
+        model.addAttribute("authenticationUser", userAuth);
         return "security";
     }
 
@@ -34,8 +47,10 @@ public class UsersController {
     }
 
     @GetMapping("/user")
-    public String userPage(Model model) {
+    public String userPage(Model model, Principal principal) {
         model.addAttribute("users", userService.showAllUsers());
+        User userAuth = userService.findUserByUsername(principal.getName());
+        model.addAttribute("authenticationUser", userAuth);
         return "user";
     }
 
