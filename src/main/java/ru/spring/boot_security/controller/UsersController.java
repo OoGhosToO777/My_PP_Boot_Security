@@ -1,6 +1,7 @@
 package ru.spring.boot_security.controller;
 
 
+import ru.spring.boot_security.model.Role;
 import ru.spring.boot_security.model.User;
 import ru.spring.boot_security.service.RoleService;
 import ru.spring.boot_security.service.UserService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Persistence;
 import java.security.Principal;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/")
@@ -29,14 +31,6 @@ public class UsersController {
         model.addAttribute("users", userService.showAllUsers());
         model.addAttribute("roles", roleService.showAllRoles());
         User userAuth = userService.findUserByUsername(principal.getName());
-        boolean test = userAuth.getUserRoles().contains("ADMIN");
-        boolean test2 = userAuth.getUserRoles().contains("ROLE_ADMIN");
-        boolean test3 = userAuth.getUserRoles().contains("USER");
-        boolean test4 = userAuth.getUserRoles().contains("ROLE_USER");
-        System.out.println(test);
-        System.out.println(test2);
-        System.out.println(test3);
-        System.out.println(test4);
         model.addAttribute("authenticationUser", userAuth);
         return "security";
     }
