@@ -1,18 +1,15 @@
 package ru.spring.boot_security.controller;
 
 
-import ru.spring.boot_security.model.Role;
-import ru.spring.boot_security.model.User;
-import ru.spring.boot_security.service.RoleService;
-import ru.spring.boot_security.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.spring.boot_security.model.User;
+import ru.spring.boot_security.service.RoleService;
+import ru.spring.boot_security.service.UserService;
 
-import javax.persistence.Persistence;
 import java.security.Principal;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/")
@@ -70,7 +67,7 @@ public class UsersController {
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "users/new";
-
+        System.out.println("testt");
         userService.saveUser(user);
         return "redirect:/";
     }
@@ -78,10 +75,11 @@ public class UsersController {
     @GetMapping("/admin/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
         model.addAttribute("user", userService.showUser(id));
+        System.out.println("Edit");
         return "users/edit";
     }
 
-    @PostMapping("/admin/delete/{id}")
+    @GetMapping("/admin/delete/{id}")
     public String delete(@PathVariable("id") int id) {
         userService.deleteUser(id);
         return "redirect:/";
@@ -92,8 +90,8 @@ public class UsersController {
                          @PathVariable("id") int id) {
         if (bindingResult.hasErrors())
             return "users/edit";
-
         userService.updateUser(id, user);
+        System.out.println("Update");
         return "redirect:/";
     }
 }

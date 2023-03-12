@@ -5,7 +5,8 @@
   <title>Hello World!</title>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/menu.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  
   <style>
     .white-text li a {
       color: white;
@@ -21,9 +22,6 @@
     }
 
   </style>
-    <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
-    <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
-    <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon.ico">
 </head>
 <body>
   <header>
@@ -62,7 +60,7 @@
 <!--            Menu-->
             <ul class="nav flex-column nav-pills" th:each="user : ${authenticationUser}">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" th:classappend="${user.getUserRoles().toString().contains('ADMIN')} ? 'active' : 'd-none'" href="/admin">Admin</a>
+                    <a class="nav-link active" aria-current="page" th:classappend="${user.getUserRoles().toString().contains('ADMIN')} ? '' : 'd-none'" href="/admin">Admin</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/user">User</a>
@@ -113,14 +111,14 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" th:id="${user.getId()}+'-Label'">Новое сообщение</h1>
+                                        <h1 class="modal-title fs-5" th:id="${user.getId()}+'-Label'">Edit user</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                                     </div>
                                     <div class="modal-body">
-                                     <!--   <form>
+                                    <!-- <form th:object="${user}">
                                             <div class="mb-3">
-                                                <label for="${id}-recipient-name" class="col-form-label">Получатель:</label>
-                                                <input type="text" class="form-control" id="${id}-recipient-name">
+                                                <label th:for="${user.getId()}+'-recipient-name'" class="col-form-label">Получатель:</label>
+                                                <input type="text" class="form-control" th:value="*{firstName}" th:id="${user.getId()}+'-recipient-name'">
                                             </div>
                                             <div class="mb-3">
                                                 <label for="${id}-message-text" class="col-form-label">Сообщение:</label>
@@ -128,26 +126,51 @@
                                             </div>
                                         </form>-->
 <!--                                        <form th:method="POST" th:action="@{/{id}(id=${user.getId()})}" th:object="${user}">-->
-                                            <form th:method="POST" th:action="@{/admin/{id}/edit(id=${user.getId()})}" th:object="${user}">
-                                            <label for="firstName">Enter name: </label>
-                                            <input type="text" th:field="*{firstName}" id="firstName"/>
+                                            <form th:method="POST" th:action="@{/{id}(id=${user.getId()})}" th:object="${user}" >
+                                            <label for="id">ID</label>
+                                            <fieldset disabled>
+                                                <input type="text" class="form-control" id="id" th:value="${user.getId()}" />
+                                            </fieldset>
+                                            <div style="color:red" th:if="${#fields.hasErrors('id')}" th:errors="*{id}">id Error</div>
+                                            <br/>
+                                            <label for="firstName">First name</label>
+                                            <input type="text" class="form-control" th:field="*{firstName}" id="firstName" th:value="*{firstName}" />
                                             <div style="color:red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First Name Error</div>
                                             <br/>
-                                            <label for="lastName">Enter age: </label>
-                                            <input type="text" th:field="*{lastName}" id="lastName"/>
+                                            <label for="lastName">Last name</label>
+                                            <input type="text" class="form-control" th:field="*{lastName}" id="lastName"/>
                                             <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">last Name Error</div>
                                             <br/>
-                                            <label for="email">Enter email: </label>
-                                            <input type="text" th:field="*{email}" id="email"/>
+                                            <label for="email">Email</label>
+                                            <input type="text" class="form-control" th:field="*{email}" id="email"/>
                                             <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
                                             <br/>
-                                            <input type="submit" value="Update!"/>
+                                            <label for="username">Username</label>
+                                            <input type="text" class="form-control" th:field="*{username}" id="username"/>
+                                            <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</div>
+                                            <br/>
+                                            <label for="password">Password</label>
+                                            <input type="text" class="form-control" th:field="*{password}" id="password"/>
+                                            <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
+                                            <br/>
+                                                <div class="form-group">
+                                                    <label class="col-form-label" for="roleAdd2">Role</label>
+                                                    <select class="custom-select form-control" multiple name="roles" th:field="*{userRoles}" id="roleAdd2">
+                                                        <option th:each="oneRole: ${roles}"
+                                                                th:selected="${oneRole.roleName == 'USER'}"
+                                                                th:text="${oneRole.roleName}"
+                                                                th:value="${oneRole.roleId}"
+                                                        >all roles
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                                </div>
                                         </form>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                                        <button type="button" class="btn btn-primary">Отправить сообщение</button>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -167,7 +190,7 @@
               <form th:method="POST" th:action="@{/}" th:object="${user}">
                   <div class="mb-3">
                       <label for="exampleInputFirstName" class="form-label">First name</label>
-                      <input type="text" class="form-control "th:field="*{firstName}" id="exampleInputFirstName" >
+                      <input type="text" class="form-control " th:field="*{firstName}" id="exampleInputFirstName" >
                   </div>
                   <div class="mb-3">
                       <label for="exampleInputLastName" class="form-label">Last Name</label>
@@ -204,9 +227,6 @@
       </div>
     </div>
   </section>
-
-
-</div>
 
 
 
