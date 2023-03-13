@@ -23,18 +23,18 @@ public class UsersController {
         this.roleService = roleService;
     }
 
-    @GetMapping()
+    @GetMapping("/admin")
     public String index(Model model, @ModelAttribute("user") User user, Principal principal) {
         model.addAttribute("users", userService.showAllUsers());
         model.addAttribute("roles", roleService.showAllRoles());
         User userAuth = userService.findUserByUsername(principal.getName());
         model.addAttribute("authenticationUser", userAuth);
-        return "security";
+        return "admin";
     }
 
-    @GetMapping("/admin")
-    public String adminPage() {
-        return "admin";
+    @GetMapping()
+    public String index() {
+        return "redirect:/login";
     }
 
     @GetMapping("/user")
@@ -62,14 +62,14 @@ public class UsersController {
         return "users/new";
     }
 
-    @PostMapping()
+    @PostMapping("/admin")
     public String create(@ModelAttribute("user") User user,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "users/new";
         System.out.println("testt");
         userService.saveUser(user);
-        return "redirect:/";
+        return "redirect:/admin";
     }
 
     @GetMapping("/admin/{id}/edit")
@@ -82,7 +82,7 @@ public class UsersController {
     @GetMapping("/admin/delete/{id}")
     public String delete(@PathVariable("id") int id) {
         userService.deleteUser(id);
-        return "redirect:/";
+        return "redirect:/admin";
     }
 
     @PostMapping("/{id}")
@@ -92,6 +92,6 @@ public class UsersController {
             return "users/edit";
         userService.updateUser(id, user);
         System.out.println("Update");
-        return "redirect:/";
+        return "redirect:/admin";
     }
 }
