@@ -38,7 +38,7 @@
                         </a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${user.getUserRoles()}">
+                        <a class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${#strings.listJoin(user.getUserRoles(), ', ')}">
                             *ListRoles*
                         </a>
                     </li>
@@ -85,7 +85,7 @@
                             <td th:text="${user.getFirstName()}">First Name</td>
                             <td th:text="${user.getLastName()}">Last Name</td>
                             <td th:text="${user.getEmail()}">Email</td>
-                            <td th:text="${user.getUserRoles()}">Role</td>
+                            <td th:text="${#strings.listJoin(user.getUserRoles(), ', ')}">Role</td>
                         </tr>
                         </tbody>
                     </table>

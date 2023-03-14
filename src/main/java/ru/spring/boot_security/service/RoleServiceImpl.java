@@ -1,6 +1,5 @@
 package ru.spring.boot_security.service;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import ru.spring.boot_security.dao.RoleRepository;
 import ru.spring.boot_security.model.Role;
