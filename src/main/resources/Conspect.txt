@@ -1,0 +1,498 @@
+#Переменные - 3 вида написания
+
+var - устаревший вариант. Можно менять в последствии. Иногда использовать плохо (Когда?)
+
+const(константа) - более новый вариант. Аналог final - т.е. нельзя потом менять. Обязательно должны при создании сразу указать значение переменной.
+
+Лучше всего применять его.
+let - как  var.
+
+Динамически типизируемый язык
+
+тут int называется number
+
+
+#Встреченные методы 
+let name = 'test'
+
+console.log() - даёт возможность следить за некоторыми величинами/параметрами прямо в консоли(F12 вкладка Console)
+
+prompt() - как alert, но с полем для ввода и возвращает введённое значение
+
+console.log(typeof name) - выводит тип данных переменной name
+
+Это можно прописывать прямо в консоли, чтобы понять что есть что.
+
+
+
+#Операторы
++
+-
+*
+/
+** (возведение в степень. Типо num * 2)
+++ (можно до и после)
+-- (можно до и после)
++= -= *= /=
+Пример
+c = c + a
+c += a
+
+#Типы данных
+##Примитивные:
+bolean
+string
+number - int
+undefined - когда у переменной нет значения (создали, но не задали) 
+null (через typeof вернет object)
+
+##Не примитивные:
+(потом)
+
+
+#Приоритет операторов (operator precedence) (операций):
+Вводишь в гугле "mdn operator precedence" и читаешь документацию
+
+#Условные операторы
+
+Разница между == и ===
+
+== Приравнивает 2 переменные к одному типу данных и сравнивает их
+
+=== НЕ Приравнивает 2 переменные к одному типу данных и сравнивает их
+
+Пример
+const num1 = 42
+const num2 = '42'
+
+console.log(num1 == num2) // true
+console.log(num1 === num2) // true
+ 
+
+#Булевая логика:
+mdn logic operators
+
+#Функции (местные методы? Методы в этом языке - это функция, которая определена в контексте объекта)
+
+Пример
+function calculate() {
+return // return не обязательно
+}
+	
+#Массивы
+Пример
+
+const cars = [1, 2, 4, 5, 6]
+
+p.s. const не действует на массив. т.е. можно все равно его менять - добавлять новые элементы, изменять имеющиеся
+
+Цикл for of - аналог for each
+
+for (let car of cars) {
+console.log(car)
+}
+
+#Объекты
+Важная структура данных в JavaScript
+
+В объект мы группируем определенное кол-во различных значений 
+
+Синтаксис - перечисление ключ-значение
+
+Варианты написания
+
+const person = new Object({})
+
+const person = {
+
+}
+
+Пример заполненного объекта
+
+const person = {
+firstName: 'Oleg',
+lastName: 'Mongol',
+year: 1993,
+languages: ['Ru', 'En', 'De'],
+hasWife: false,
+greet: function() {
+console.log('greet')
+ }
+}
+
+Как вызвать переменную из объекта:
+1. 
+person.firstName
+2. 
+person['firstName']
+3.
+const key = 'firstName'
+person[key] 
+
+##Особенности
+Новые ключи можно удалять в объект в любой момент и изменять их
+
+#Числа
+есть целые числа - integer (42) 
+есть число с десятичными и т.д. float (42.42)
+возведение в степень - pow (10e3 = 10000)
+
+Примитивные числа "под капотом" преобразуются в класс Number 
+
+##Складывание строки с числом - варианты.
+
+const stringInt = '40'
+console.log(stringInt + 2) // 422 
+console.log(Number.parseInt(stringInt) + 2) // 42
+console.log(parseInt(stringInt) + 2) // 42
+console.log(Number(stringInt) + 2) // 42
+console.log(+stringInt + 2) // 42
+
+##Борьба со сложением float'ов
+
+Проблема:
+0.4 + 0.2 = 0.60000001
+
+Решение
+console.log((0.4 + 0.2).toFixed(1)) - отсекает числа после запятой (не округляет). Ответ в виде строки
+
+#BigInt
+
+Чтобы преобразовать в BigInt следует в конце числа поставить n (908979896898987897095657n)
+
+1. Десятичные не принимаются
+2. Работает только с другими BigInt 
+console.log(10n - 4) // error
+console.log(parseInt(10n) - 4) // 6
+console.log(10n - BigInt(4)) // 6n
+
+#Math
+mdn Math
+2:15
+
+#Строки
+##Замена конкатенации
+Используя обратные кавычки можно обойтись без конкатенации (Речь о них - ``)
+
+
+const name = 'Oleg'
+const age = 20
+
+const output = 'My name is ' + name + ' and i am a ' + age + ' years old.' // Итог - My name is Oleg and i am a 20 years old.
+
+const output_good = `My name is ${name} and i am a ${age} years old.` // Итог - My name is Oleg and i am a 20 years old.
+
+В блоке ${} нельзя использовать if, но тернарные выражения - можно
+
+###ТАКЖЕ
+При помощи `` можно записывать многострочные вещи - сделав перенос строки, отступы и т.д. в коде останутся и в консоле и т.д.
+
+##Встроенные методы
+name.trim() - удаляет пробелы 
+
+
+#Функции
+
+##Способы создания/вариации 
+
+###Function Declaration - можно обращаться еще до ее создания (по положению в коде)
+function greet(name) {
+console.log('Hello - ', name) 
+}
+
+
+
+###Function Expression - когда мы создаём функцию и складываем её в переменную. Нельзя обращаться еще до ее создания (по положению в коде)
+
+
+const greet2 = function greet2(name) {
+console.log('Hello 2 - ', name) 
+}
+
+##Анонимная функция
+Выглядит вот так
+function() {
+}
+
+Пример - встроенный метод setInterval(handler, timeout)
+
+
+##Стрелочные функции
+Обычная функция
+function greet(name) {
+console.log('Hello - ', name) 
+}
+
+Стрелочная
+const arrow = (name) => {
+console.log('Hello - ', name) 
+}
+
+Т.к. в нашем примере всего 1 параметр и вся функция состоит из одной строки, то мы можем написать вот так (убрать скобки и фигурные скобки соответственно)
+ 
+const arrow2 = name => console.log('Hello - ', name) 
+
+С двумя параметрами это работало бы вот так
+
+const sum = (a, b) => a + b
+
+
+
+##Параметры по умолчанию
+Параметр по умолчанию указывается в скобках с параметрами функций и если в функцию не будет переданы какие-то данные - будет задействован параметр по умолчанию
+
+const sum = (a = 40, b = 2) => a + b
+
+###Неограниченное кол-во передаваемых параметров
+
+Для этого есть специальный оператор Rest, который обозначается тремя точками
+
+function sumAll(...all) {
+}
+
+
+##Замыкание
+Это явление, когда мы из одной функции возвращаем другую функцию и дальше там происходит сохранение некоторого контекста 
+
+
+function createMember(name) {
+return function(lastName) {
+console.log(name + lastName)
+}
+}
+
+const logWithLastName =  createMember('Vladilen')
+console.log(logWithLastName) // Ответом будет сама функция внутри функции, но внутри нее на самом деле уже зашито name = Vladilen - произошло "Замыкание" параметра.
+
+console.log(logWithLastName('Minin')) // Ответом будет Vladilen Minin и undefined
+
+Чаще всего используется для создания приватных переменных, чтобы нельзя было получить доступ к какому-то параметру 
+
+#Массивы
+arr.push() - добавляет в конце массива новый элемент
+arr.unshift() - добавляет в начало массива новый элемент
+arr.shift() - удаляет первый элемент массива и возвращает его
+arr.pop() - удаляет последний элемент массива и возвращает его
+arr.reverse() - возвращает массив задом наперед
+
+
+У массивов имеется метод for. each
+keys.forEach((key) => {
+console.log('key:', key)
+console.log('value:', person[key]) 
+}
+
+
+##Переворот строчки в обратном порядке в JavaScript
+
+const text = 'Переворот строчки в обратном порядке.'
+
+const reverseText = text.split('').reverse().join() // split - Делит строчку на символы и преображает в массив. Мы задаем по какому символу делить.  В нашем примере это ничего. .join('') - преобразовывает массив в строку(по умолчанию соединяет через запятые)
+
+
+##Поиск в массиве
+arr.indexOf('BMW') - Возвращает индекс того элемента, который мы ищем. Хорошо работает с примитивными данными
+
+arr.findIndex() - Возвращает индекс того элемента, который мы ищем. Хорошо работает с более сложными типами данных (Объектами, например). Является циклом.
+
+
+###Пример
+
+const people = [
+{name: 'Vlad' budget: 4200},
+{name: 'Oleg' budget: 3500},
+{name: 'Lena' budget: 1700}
+]
+
+const index = people.findIndex(function(person) {
+return person.budget === 3500
+})
+
+const person = people.find(function(person) {
+return person.budget === 3500
+}) - Возвращает сразу нужный объект
+ 
+const person = people.find(person => person.budget === 3500
+) - Реализация через стрелочную функцию
+
+arr.includes('BMW') - проверяет есть ли в массиве такой элемент
+
+arr.map() - возвращает новый измененный массив
+Пример
+
+const upperCaseCars = cars.map(car => { 
+return car.toUpperCase()
+}) // Берет из массива cars элементы и перегоняет их в верхний регистр
+
+arr.filter() - возвращает отфильтрованный массив 
+
+const filter = arr.filter(num => {
+return num > 20
+})
+
+reduce() - объединяет все значения массива. в одно (Тайминг 3:38)
+
+people.reduce(function(acc, person) => {
+acc += person.budget
+return acc
+}, 0) // 0 - начальное значение, с какого мы хотим считать
+
+#Объекты
+const person = {
+name: 'Vlad',
+age: 26,
+isProgrammer: true,
+languages: ['ru', 'en', 'de'],
+'complex key': 'Complex Value;, // Одинарные кавычки позволяют называть ключи с пробелами
+['key_' + (1 + 3)]: 'Computed Key', // ПО итогу название ключа будет key_4
+greet: function() {
+console.log('hello')
+}
+}
+
+P.S.
+greet: function() {}
+}
+
+можно записать как 
+
+greet() {}
+}
+
+
+##Удаление ключа из объекта
+Для этого есть ключевое слово delete
+
+delete person['key_4']
+
+
+##Деструкторизация
+
+Вместо
+
+const name = person.name
+const age = person.age
+const languages = person.languages
+
+console.log(name, age, languages)
+
+
+можно написать так
+
+const {name, age, languages} = person
+
+console.log(name, age, languages)
+
+или
+
+const {name, age: personAge, languages} = person // Тут мы берем у объекта person поле age и положить его в personAge
+
+console.log(name, personAge, languages)
+
+Также можно ставить значение по умолчанию
+const {name, age: personAge = 10, languages} = person
+
+##Цикл for in
+
+for (let key in person) {
+console.log('key:', key) // Выводит название ключа объекта
+console.log('value:', person[key]) // Выводит значение ключа
+} 
+
+Цикл for in опасен тем, что не только проходится по ключам самого объекта, но и может заходить в его прототип и это может вызвать ошибки.
+Чтобы этого избежать следует добавить проверку
+
+for (let key in person) {
+if (person.hasOwnProperty(key)) {
+console.log('key:', key)
+console.log('value:', person[key]) 
+}
+} 
+
+###Современный способ итерации по ключам/объекту
+
+const keys = Object.keys(person) // Возвращает массив из ключей объекта
+
+У массивов имеется метод for. each
+
+const keys = Object.keys(person)
+keys.forEach((key) => {
+console.log('key:', key)
+console.log('value:', person[key]) 
+}
+
+Более короткая запись
+
+Object.keys(person).forEach((key) => {
+console.log('key:', key)
+console.log('value:', person[key]) 
+}
+
+#Контекст
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#Отличие функции от метода в JavaScript 
+
+Функция, вызываемая в контексте объекта - это метод.
+Создаваемая отдельная функция - это функция 
+
+// Function
+function addItemToEnd() {
+}
+
+// Method
+arr.push()
+
+
+
+
+Прототипы - Это набор взаимосвязанных объектов, с помощью которых мы для тех или иных структур данных добавляем определенный функционал 
+
+
+Как искать инфу по джаваСкрипт(Лучшая документация) :
+"mdn + 'что мы ищем' "
+
+mdn - Это Mozilla Developer Network
