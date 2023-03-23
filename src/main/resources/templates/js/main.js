@@ -23,13 +23,19 @@ console.log(logWithLastName)
 
 console.log(logWithLastName('Minin'))
 */
+const person = {
+    name: 'Oleg',
+    age: 42,
+    isProgrammer: true
+}
 
-const cars = ['Lexus', 'BMW', 'Mercedes', 'Ford']
+const logger = {
+    keys() {
+        console.log('Object Keys: ', Object.keys(this))
+    }
+}
 
-console.log(cars)
+const bound = logger.keys.bind(person)
+bound()
 
-
-const text = 'Oh shit, here we go again.'
-
-const reverseText = text.split('').reverse().join('') // split - Делит строчку на символы и преображает в массив. Мы задаем по какому символу делить.  В нашем примере это ничего. .join() - преобразовывает массив в строку
-console.log(reverseText);
+logger.keys.call(person)

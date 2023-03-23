@@ -428,20 +428,47 @@ console.log('key:', key)
 console.log('value:', person[key]) 
 }
 
-#Контекст
- 
+#Контекст (4:09)
+const person = {
+    name: 'Oleg',
+    age: 42,
+    isProgrammer: true
+}
 
+const logger = {
+    keys() {
+        console.log('Object Keys: ', Object.keys(this))
+    }
+}
 
+.bind() - берет и привязывает определенный контекст, который мы сами выберем и потом можем вызвать когда хотим. Возвращает новую функцию
 
+const bound = logger.keys.bind(person)
+bound // В нашем примере вернет массив ключей объекта person т.к. this внутри Object.keys(this) заменится на person
 
+.call() - Как .bind(), но сразу же вызывает функцию 
 
+##Пример вывода в консоль ключ, значение
+const logger = {
+keysAndValues() {
+Object.keys(this).forEach(function(key) {
+console.log(`"${key}": ${this[key]}`)
+}.bind(this))
+}
+}
 
+##Когда мы можем передавать различные параметры в функции
 
+.apply() - как  
+4:20
+.call(), но принимает в себя только 2 параметра из элементов, что нужны для функции
 
+#Асинхронность
 
+#DOM Дерево
 
-
-
+5:22 - события
+mdn MouseEvent - Справочник по событиям
 
 
 
