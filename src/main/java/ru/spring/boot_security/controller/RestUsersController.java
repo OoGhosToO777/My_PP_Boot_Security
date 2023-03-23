@@ -29,21 +29,18 @@ public class RestUsersController {
         return userService.showUser(id);
     }
 
-    //TODO Rewrite - this is not work
     @PostMapping(path = "/users")
     public User addNewUser(@RequestBody User user) {
         userService.saveUser(user);
         return user;
     }
 
-    //TODO Rewrite - this is not work
     @PutMapping(path = "/users")
     public @ResponseBody User updateUser(@RequestBody User user) {
         userService.saveUser(user);
         return user;
     }
 
-    //TODO Rewrite - this is not work
     @DeleteMapping(path = "/users/{id}")
     public String deleteUser(@PathVariable int id) {
         userService.deleteUser(id);
