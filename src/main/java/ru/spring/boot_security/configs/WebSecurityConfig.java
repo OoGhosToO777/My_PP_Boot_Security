@@ -52,9 +52,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        // Вернуть потом
+       /* http
                 .authorizeRequests()
-                .antMatchers("/**", "/index/**", "/registration/**" ).permitAll()
+                .antMatchers("/", "/index/**", "/registration/**" ).permitAll()
                 .antMatchers("/user").hasAnyAuthority("ADMIN", "USER")
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
@@ -63,7 +64,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
-                .permitAll();
+                .permitAll();*/
+
+        // Теперь Создание, Удаление, Изменение заработали
+        http.cors().and().csrf().disable();
     }
 
 }
