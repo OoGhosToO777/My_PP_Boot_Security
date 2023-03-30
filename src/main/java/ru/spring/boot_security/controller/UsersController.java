@@ -37,6 +37,11 @@ public class UsersController {
         return "redirect:/login";
     }
 
+    @GetMapping("/index")
+    public String test() {
+        return "index";
+    }
+
     @GetMapping("/user")
     public String userPage(Model model, Principal principal) {
         model.addAttribute("users", userService.showAllUsers());

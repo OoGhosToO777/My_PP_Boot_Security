@@ -30,7 +30,7 @@ public class RestUsersController {
     }
 
     @PostMapping(path = "/users")
-    public User addNewUser(@RequestBody User user) {
+    public @ResponseBody User addNewUser(@RequestBody User user) {
         userService.saveUser(user);
         return user;
     }
