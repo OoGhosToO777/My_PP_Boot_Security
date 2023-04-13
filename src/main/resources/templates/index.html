@@ -16,7 +16,7 @@
                 let table = "<table border='1px'><tr><td>ID</td><td>name</td><td>last</td></tr>";
 
                 for (i = 0; i < data.length; i++) {
-                    table = table + "<tr><td>" + data[i].id + "</td><td>" + data[i].firstName + "</td><td>" + data[i].lastName + "</td></tr>"
+                    table = table + "<tr><td>" + data[i].id + "</td><td>" + data[i].firstName + "</td><td>" + data[i].lastName + "</td><td><input type=\"button\" onclick=\"eventUser()\" id=\"elem\" value=\"Event\" /></td></tr>"
                 }
 
                 table = table + "</table>";
@@ -28,7 +28,41 @@
         $(document).ready(function () {
             showUsers()
 
+
+            elem.onclick = function (event) {
+                // вывести тип события, элемент и координаты клика
+                console.log(event.type + " on " + event.currentTarget)
+                console.log("Coordinate is " + event.clientX + ":" + event.clientY )
+                console.log("id = " + event.target.id)
+                console.log(event)
+                let number = returnUserById()
+                console.log(number)
+                let user = showOneUser()
+                console.log("User time")
+                console.log(user)
+                console.log("User time")
+                console.log("User is " + user)
+
+
+            }
+
         });
+
+        function alarm() {
+            console.log("Triggered")
+        }
+
+        function alarm_2(event) {
+            // вывести тип события, элемент и координаты клика
+            console.log(event.type + " on " + event.currentTarget)
+            console.log("Coordinate is " + event.clientX + ":" + event.clientY )
+            console.log("Triggered")
+        }
+
+        function eventUser() {
+            console.log("Hello, i am a eventUser function")
+        }
+
 
         function sendUser() {
 
@@ -98,6 +132,32 @@
                 showUsers()
             })
         }
+
+
+        function showOneUser() {
+            return $.get('users/60')
+        }
+
+        function returnUserById() {
+            let id = 60
+
+            $.ajax({
+                url: '/users/' + id,
+                dataType: 'json',
+                type: 'GET',
+                cache: false,
+                contentType: 'application/json',
+                success: function () {
+                    console.log("Return_User (function returnUserById())")
+                    showUsers()
+                }
+
+            }).fail(function (url) {
+                console.log(url);
+                console.log("Return_Fail_User (function returnUserById())")
+                showUsers()
+            })
+        }
     </script>
 </head>
 <body>
@@ -107,6 +167,8 @@
 <a th:href="@{/logout}">Sign Out</a>
 
 <div id="test_user"></div>
+<input type="button" onclick="eventUser()" id="elem" value="Event" />
+
 
 <form>
     <input type="text" id="user_id" placeholder="ID" /><br />

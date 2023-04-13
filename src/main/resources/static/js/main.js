@@ -1,6 +1,8 @@
 // fetch("http://localhost:8080/user").then(res => console.log(res))
 let user_firstName
 let save_User
+let add_new_User
+let edit_Button
 
 console.log("its meeeee")
 
@@ -15,8 +17,16 @@ const API = function() {
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    firstName: user_firstName.val()
-                })
+                    firstName: $("#exampleInputFirstName").val(),
+                    lastName: $("#exampleInputLastName").val(),
+                    email: $("#exampleInputEmail1").val(),
+                    password: $("#exampleInputPassword1").val()
+                    // ,userRoles: $("#roleAdd").val()
+                }),
+                success: function () {
+                    console.log("Save Complete")
+                    showUsersOnTable()
+                }
             })
         },
         /*
@@ -57,29 +67,41 @@ let userRole = function (roles) {
     return arr
 }
 
-$(function() {
-    let myTab = $('tbody#tbody');
-    let api = new API();
-    api.showAllUsers(
-        function (users) {
-            // console.log(users[0])
-            myTab.empty();
-            for (let i = 0; i < users.length; i++) {
-                myTab
-                    .append('\
+// Не сработало - удалить
+$("#edit_Button").bind("click", function () {
+        console.log("edit_button_bind")
+    }
+)
+
+function showUsersOnTable() {
+        let myTabTest = $('tbody#tbody');
+        let api = new API();
+        api.showAllUsers(
+            function (users) {
+                // console.log("showAllUsersTest")
+                console.log(users[0])
+                myTabTest.empty();
+                for (let i = 0; i < users.length; i++) {
+                    myTabTest
+                        .append('\
                     <tr>\
                         <td>' + users[i].id + '</td>\
                         <td>' + users[i].firstName + '</td>\
                         <td>' + users[i].lastName + '</td>\
                         <td>' + users[i].email + '</td>\
                         <td>' + userRole(users[i].userRoles) + '</td>\
+                        <td id="users[i].id" >\
+                        <button type="submit" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#22" data-bs-whatever="@mdo" id="edit_Button" >Edit</button>\
+                        <!-- <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#' + users[i].id +'" data-bs-whatever="@mdo" id="edit_Button" >Edit</button>\ \
+                        <button type="submit" class="btn btn-primary" id="add_new_User">Add new user</button>-->\
+                        </td>\
+                        <td id="' + users[i].id +'">Delete button</td>\
                     </tr>\
                         ')
+                }
             }
-        }
-    )
+        )
 }
-);
 
 let content = $('div#app'); //наш див с результатами поиска
 content.empty(); //очистит все внутри него;
@@ -130,12 +152,26 @@ function sendUser() {
 
 
 $(document).ready (function () {
+    showUsersOnTable()
     user_firstName = $('#user_firstName')
     save_User = $('#save_User')
+    add_new_User = $('#add_new_User')
+    edit_Button = $('#edit_Button')
 
     save_User.click(function () {
+        console.log("Time to save User")
         let api = new API();
         api.addNewUser()
+    })
+
+    add_new_User.click(function () {
+        console.log("Time to add new User")
+        let api = new API();
+        api.addNewUser()
+    })
+
+    edit_Button.click(function () {
+        console.log("Time to summon Form")
     })
 
     $("#load").bind("click", function () {
@@ -150,6 +186,11 @@ $(document).ready (function () {
             console.log(data)
         })
     })
+
+    $("#edit_Button").bind("click", function () {
+            console.log("edit_button_bind")
+        }
+    )
 
 
 })

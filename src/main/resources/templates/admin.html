@@ -104,12 +104,71 @@
                   <td>Role</td>
                 </tr>
               </tbody>
+                <!--TODO сделать ID плавающим или ещё чего -->
+                <div class="modal fade" id="22" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" th:id="${user.getId()}+'-Label'">Edit user</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form th:method="POST" th:action="@{/{id}(id=${user.getId()})}" th:object="${user}" >
+                                    <label for="id">ID</label>
+                                    <fieldset disabled>
+                                        <input type="text" class="form-control" id="id" th:value="${user.getId()}" />
+                                    </fieldset>
+                                    <div style="color:red" th:if="${#fields.hasErrors('id')}" th:errors="*{id}">id Error</div>
+                                    <br/>
+                                    <label for="firstName">First name</label>
+                                    <input type="text" class="form-control" id="firstName" name="firstName" th:value="*{firstName}">
+                                    <div style="color:red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First Name Error</div>
+                                    <br/>
+                                    <label for="lastName">Last name</label>
+                                    <input type="text" class="form-control" th:value="*{lastName}" name="lastName" id="lastName"/>
+                                    <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">last Name Error</div>
+                                    <br/>
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control" th:value="*{email}" name="email" id="email"/>
+                                    <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
+                                    <br/>
+                                    <label for="username">Username</label>
+                                    <input type="text" class="form-control" th:value="*{username}" name="username" id="username"/>
+                                    <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</div>
+                                    <br/>
+                                    <label for="password">Password</label>
+                                    <input type="text" class="form-control" th:value="*{password}" name="password" id="password"/>
+                                    <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
+                                    <br/>
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="roleAdd2">Role</label>
+                                        <select class="custom-select form-control" multiple name="roles" th:field="*{userRoles}" id="roleAdd2">
+                                            <option th:each="oneRole: ${roles}"
+                                                    th:selected="${oneRole.roleName == 'USER'}"
+                                                    th:text="${oneRole.roleName}"
+                                                    th:value="${oneRole.roleId}"
+                                            >all roles
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Edit</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
             </table>
 
               <div id="app">{{ message }}
               </div>
 
-              <p id="load" style="cursor:pointer">Загрузить данные</p>
+              <p id="load" style="cursor:pointer">Загрузить данные</p><br />
+              <button type="submit" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#22" data-bs-whatever="@mdo" id="edit_Button" >Edit</button><br />
               <div id="information"></div>
 
               <form>
@@ -117,35 +176,37 @@
                   <input type="text" id="user_firstName" placeholder="Name" /><br />
                   <input type="text" id="user_lastName" placeholder="Name" /><br />
                   <input type="text" id="user_userEmail" placeholder="Name" /><br />
-                  <input type="button" onclick="sendUser()" id="save_User" value="Save" /><br />
+                  <input type="button" id="save_User" value="Save" /><br />
               </form>
+
+                  <button type="button" class="btn btn-info" data-bs-toggle="modal" th:data-bs-target="'#'+${user.getId()}" data-bs-whatever="@mdo">Edit</button>
 
 
           </div>
           <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-              <form th:method="POST" th:action="@{/admin}" th:object="${user}">
+              <form>
                   <br/>
                   <div class="mb-3">
                       <label for="exampleInputFirstName" class="form-label">First name</label>
-                      <input type="text" class="form-control " th:field="*{firstName}" id="exampleInputFirstName" >
+                      <input type="text" class="form-control" id="exampleInputFirstName" >
                   </div>
                   <div class="mb-3">
                       <label for="exampleInputLastName" class="form-label">Last Name</label>
-                      <input type="text" class="form-control" th:field="*{lastName}" id="exampleInputLastName">
+                      <input type="text" class="form-control" id="exampleInputLastName">
                   </div>
                   <div class="mb-3">
                       <label for="exampleInputEmail1" class="form-label">Email</label>
-                      <input type="email" class="form-control" th:field="*{email}" id="exampleInputEmail1">
+                      <input type="email" class="form-control" id="exampleInputEmail1">
                   </div>
                   <div class="mb-3">
                       <label for="exampleInputPassword1" class="form-label">Password</label>
-                      <input type="password" class="form-control" th:field="*{password}" id="exampleInputPassword1">
+                      <input type="password" class="form-control" id="exampleInputPassword1">
                   </div>
                   <div class="form-group">
 
                       <label class="col-form-label" for="roleAdd">Role</label>
 
-                      <select class="custom-select form-control" multiple name="roles" th:field="*{userRoles}" id="roleAdd">
+                      <select class="custom-select form-control" multiple name="roles"  id="roleAdd">
 
                           <option th:each="oneRole: ${roles}"
                                   th:selected="${oneRole.roleName == 'USER'}"
@@ -159,7 +220,7 @@
                   </div>
                   <br/>
                   <div class="mb-3">
-                    <button type="submit" class="btn btn-primary">Add new user</button>
+                    <button type="submit" class="btn btn-primary" id="add_new_User">Add new user</button>
                   </div>
               </form>
           </div>
