@@ -2,7 +2,8 @@
 let user_firstName
 let save_User
 let add_new_User
-let edit_Button
+/*TODO Если убрать этот let, то тогда*/
+// let edit_Button
 
 console.log("its meeeee")
 
@@ -68,10 +69,10 @@ let userRole = function (roles) {
 }
 
 // Не сработало - удалить
-$("#edit_Button").bind("click", function () {
+/*$("#edit_Button").bind("click", function () {
         console.log("edit_button_bind")
     }
-)
+)*/
 
 function showUsersOnTable() {
         let myTabTest = $('tbody#tbody');
@@ -91,7 +92,7 @@ function showUsersOnTable() {
                         <td>' + users[i].email + '</td>\
                         <td>' + userRole(users[i].userRoles) + '</td>\
                         <td id="users[i].id" >\
-                        <button type="submit" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#22" data-bs-whatever="@mdo" id="edit_Button" >Edit</button>\
+                        <button type="submit" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editUserForm" data-bs-whatever="@mdo" onclick="eventUser()" id="edit_Button" >Edit</button>\
                         <!-- <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#' + users[i].id +'" data-bs-whatever="@mdo" id="edit_Button" >Edit</button>\ \
                         <button type="submit" class="btn btn-primary" id="add_new_User">Add new user</button>-->\
                         </td>\
@@ -102,6 +103,22 @@ function showUsersOnTable() {
             }
         )
 }
+/*
+edit_Button.onclick = function (event) {
+    // вывести тип события, элемент и координаты клика
+    console.log(event.type + " on " + event.currentTarget)
+    console.log("Coordinate is " + event.clientX + ":" + event.clientY )
+    console.log("id = " + event.target.id)
+}*/
+
+/*TODO Это начинает работать. почему?*/
+edit_Button.onclick = function (event) {
+    // вывести тип события, элемент и координаты клика
+    console.log(event.type + " on " + event.currentTarget)
+    console.log("Coordinate is " + event.clientX + ":" + event.clientY )
+    console.log("id = " + event.target.id)
+}
+
 
 let content = $('div#app'); //наш див с результатами поиска
 content.empty(); //очистит все внутри него;
@@ -156,7 +173,7 @@ $(document).ready (function () {
     user_firstName = $('#user_firstName')
     save_User = $('#save_User')
     add_new_User = $('#add_new_User')
-    edit_Button = $('#edit_Button')
+    // edit_Button = $('#edit_Button')
 
     save_User.click(function () {
         console.log("Time to save User")
@@ -170,9 +187,22 @@ $(document).ready (function () {
         api.addNewUser()
     })
 
-    edit_Button.click(function () {
+   /* edit_Button.click(function () {
         console.log("Time to summon Form")
-    })
+
+    })*/
+
+    edit_Button.onclick = function (event) {
+        // вывести тип события, элемент и координаты клика
+        console.log("edit_Button.click = function")
+        console.log(event.type + " on " + event.currentTarget)
+        console.log("Coordinate is " + event.clientX + ":" + event.clientY)
+        console.log("id2 = " + event.target.id)
+
+        //TODO Прописать путь иначе?
+        let myTabTest = $('div#editUserForm');
+        myTabTest.empty();
+    }
 
     $("#load").bind("click", function () {
         $.ajax({

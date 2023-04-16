@@ -53,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // Вернуть потом
-       /* http
+        http
                 // Отключает csrf
                 .csrf().disable()
                 .authorizeRequests()
@@ -66,10 +66,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
-                .permitAll();*/
+                .permitAll();
 
         // Теперь Создание, Удаление, Изменение заработали
-        http.cors().and().csrf().disable();
+//        http.cors().and().csrf().disable();
     }
 
 }

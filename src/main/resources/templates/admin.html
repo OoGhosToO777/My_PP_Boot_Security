@@ -105,7 +105,7 @@
                 </tr>
               </tbody>
                 <!--TODO сделать ID плавающим или ещё чего -->
-                <div class="modal fade" id="22" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="editUserForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -168,7 +168,10 @@
               </div>
 
               <p id="load" style="cursor:pointer">Загрузить данные</p><br />
-              <button type="submit" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#22" data-bs-whatever="@mdo" id="edit_Button" >Edit</button><br />
+<!--              <button type="submit" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#22" data-bs-whatever="@mdo" id="edit_Button" >Edit</button><br />-->
+              <input type="button" onclick="eventUser()" id="edit_Button" value="Event" />
+              <input type="button" onclick="eventUser()" id="elem" value="Event" />
+              <br />
               <div id="information"></div>
 
               <form>

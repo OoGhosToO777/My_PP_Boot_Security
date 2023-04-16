@@ -25,26 +25,53 @@
             });
         }
 
+        // It's works
+        let id = 37
+        function showOneUsers(userId) {
+            let id = userId;
+            $.get('/users', function (data) {
+                console.log("showOneUsers")
+
+
+                let user_60
+
+                for (i = 0; i < data.length;) {
+                    console.log("i = " + i)
+                    if (data[i].id === id) {
+                        user_60 = data[i]
+                        break
+                    } else {
+                        i++
+                    }
+                }
+
+                console.log(user_60)
+
+            });
+        }
+
         $(document).ready(function () {
             showUsers()
+            // showOneUsers(id)
 
 
             elem.onclick = function (event) {
                 // вывести тип события, элемент и координаты клика
                 console.log(event.type + " on " + event.currentTarget)
                 console.log("Coordinate is " + event.clientX + ":" + event.clientY )
-                console.log("id = " + event.target.id)
                 console.log(event)
-                let number = returnUserById()
-                console.log(number)
-                let user = showOneUser()
-                console.log("User time")
-                console.log(user)
-                console.log("User time")
-                console.log("User is " + user)
+                console.log("id = " + event.target.id)
+                console.log("class = " + event.target.className)
+                let number = Number(event.target.className)
+                let test = 2
+                let test_2 = Number(23)
+                console.log("number.class = " + number.class)
+                console.log("test.class = " + test.class)
+                console.log("test_2.class = " + test_2.class)
 
-
+                showOneUsers(number)
             }
+
 
         });
 
@@ -141,7 +168,7 @@
         function returnUserById() {
             let id = 60
 
-            $.ajax({
+            let user = $.ajax({
                 url: '/users/' + id,
                 dataType: 'json',
                 type: 'GET',
@@ -157,6 +184,9 @@
                 console.log("Return_Fail_User (function returnUserById())")
                 showUsers()
             })
+
+            // return '{ "name": "John", "age": 35, "isAdmin": false, "friends": [0,1,2,3] }';
+            return user
         }
     </script>
 </head>
@@ -167,7 +197,7 @@
 <a th:href="@{/logout}">Sign Out</a>
 
 <div id="test_user"></div>
-<input type="button" onclick="eventUser()" id="elem" value="Event" />
+<input type="button" onclick="eventUser()" id="elem" class="37" value="Event" />
 
 
 <form>
