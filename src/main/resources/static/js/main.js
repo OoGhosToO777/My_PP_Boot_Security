@@ -2,8 +2,10 @@
 let user_firstName
 let save_User
 let add_new_User
+
 /*TODO Если убрать этот let, то тогда*/
 // let edit_Button
+let update_User
 
 console.log("its meeeee")
 
@@ -40,12 +42,26 @@ const API = function() {
             })
         },
         */
-        updateUser: function (user, param) {
+        updateUser: function () {
+
             $.ajax({
                 url: '/users',
+                dataType: 'json',
                 type: 'PUT',
-                data: JSON.stringify(user),
-                success: param
+                cache: false,
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    id: $("#user_id").val(),
+                    firstName: $("#user_firstName").val(),
+                    lastName: $("#user_lastName").val(),
+                    email: $("#user_userEmail").val(),
+                    username: $("#user_userName").val(),
+                    password: $("#user_password").val()
+                }),
+                success: function () {
+                    console.log("Update_User (function updateUser())")
+                    showUsersOnTable()
+                }
             })
         },
         deleteUser: function (id, param) {
@@ -92,7 +108,7 @@ function showUsersOnTable() {
                         <td>' + users[i].email + '</td>\
                         <td>' + userRole(users[i].userRoles) + '</td>\
                         <td id="users[i].id" >\
-                        <button type="submit" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editUserForm" data-bs-whatever="@mdo" onclick="eventUser()" id="edit_Button" >Edit</button>\
+                        <button type="submit" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editUserFormDiv" data-bs-whatever="@mdo" onclick="eventUser()" id="edit_Button" >Edit</button>\
                         <!-- <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#' + users[i].id +'" data-bs-whatever="@mdo" id="edit_Button" >Edit</button>\ \
                         <button type="submit" class="btn btn-primary" id="add_new_User">Add new user</button>-->\
                         </td>\
@@ -102,6 +118,10 @@ function showUsersOnTable() {
                 }
             }
         )
+}
+
+function eventUser() {
+    console.log("Hello, i am a eventUser function")
 }
 /*
 edit_Button.onclick = function (event) {
@@ -117,6 +137,7 @@ edit_Button.onclick = function (event) {
     console.log(event.type + " on " + event.currentTarget)
     console.log("Coordinate is " + event.clientX + ":" + event.clientY )
     console.log("id = " + event.target.id)
+    console.log("edit_Button.onclick = function (event) ")
 }
 
 
@@ -167,12 +188,19 @@ function sendUser() {
 }
 */
 
+//TODO Работает, но форма перезагружает страницу - надо поправить
+function updateUser() {
+    console.log("Time to for function update_User")
+    let api = new API();
+    api.updateUser()
+}
 
 $(document).ready (function () {
     showUsersOnTable()
     user_firstName = $('#user_firstName')
     save_User = $('#save_User')
     add_new_User = $('#add_new_User')
+    update_User = $('#update_User')
     // edit_Button = $('#edit_Button')
 
     save_User.click(function () {
@@ -186,11 +214,85 @@ $(document).ready (function () {
         let api = new API();
         api.addNewUser()
     })
+//TODO На элементы, написанные JS'ом не работают события
+    update_User.click(function () {
+        console.log("Time to add update_User")
+        let api = new API();
+        api.updateUser()
+    })
+
 
    /* edit_Button.click(function () {
         console.log("Time to summon Form")
 
     })*/
+
+    function showOneUsers(userId) {
+        let id = userId;
+        $.get('/users', function (data) {
+            console.log("showOneUsers")
+
+
+            let user_60
+
+            for (i = 0; i < data.length;) {
+                console.log("i = " + i)
+                if (data[i].id === id) {
+                    user_60 = data[i]
+                    break
+                } else {
+                    i++
+                }
+            }
+
+            console.log(user_60)
+            console.log(user_60.id)
+            console.log(user_60.firstName)
+
+            //TODO Прописать путь иначе?
+            let myForm = $('div#editUserForm');
+            myForm.empty();
+            myForm.append('\n' +
+                '                                <form>\n' +
+                '                                    <label for="id">ID</label>\n' +
+                '                                    <fieldset disabled>\n' +
+                '                                        <input type="text" class="form-control" value="' + user_60.id + '" id="user_id"/>\n' +
+                '                                    </fieldset>\n' +
+                '                                    <br/>\n' +
+                '                                    <label for="firstName">First name</label>\n' +
+                '                                    <input type="text" class="form-control" value="' + user_60.firstName + '" name="firstName" id="user_firstName"/>\n' +
+                '                                    <br/>\n' +
+                '                                    <label for="lastName">Last name</label>\n' +
+                '                                    <input type="text" class="form-control" value="' + user_60.lastName + '" name="lastName" id="user_lastName"/>\n' +
+                '                                    <br/>\n' +
+                '                                    <label for="email">Email</label>\n' +
+                '                                    <input type="email" class="form-control" value="' + user_60.email + '" name="email" id="user_userEmail"/>\n' +
+                '                                    <br/>\n' +
+                '                                    <label for="username">Username</label>\n' +
+                '                                    <input type="text" class="form-control" value="' + user_60.username + '" name="username" id="user_userName"/>\n' +
+                '                                    <br/>\n' +
+                '                                    <label for="password">Password</label>\n' +
+                '                                    <input type="text" class="form-control" value="' + user_60.password + '" name="password" id="user_password"/>\n' +
+                '                                    <br/>\n' +
+                '                                    <div class="form-group">\n' +
+                '                                        <label class="col-form-label" for="roleAdd2">Role</label>\n' +
+                '                                        <select class="custom-select form-control" multiple name="roles" th:field="*{userRoles}" id="roleAdd2">\n' +
+                '                                            <option th:each="oneRole: ${roles}"\n' +
+                '                                                    th:selected="${oneRole.roleName == \'USER\'}"\n' +
+                '                                                    th:text="${oneRole.roleName}"\n' +
+                '                                                    th:value="${oneRole.roleId}"\n' +
+                '                                            >all roles\n' +
+                '                                            </option>\n' +
+                '                                        </select>\n' +
+                '                                    </div>\n' +
+                '                                    <div class="modal-footer">\n' +
+                '                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>\n' +
+                '                                        <button type="submit" class="btn btn-primary" id="update_User" onclick="updateUser()">Edit</button>\n' +
+                '                                    </div>\n' +
+                '                                </form>')
+
+        });
+    }
 
     edit_Button.onclick = function (event) {
         // вывести тип события, элемент и координаты клика
@@ -199,9 +301,10 @@ $(document).ready (function () {
         console.log("Coordinate is " + event.clientX + ":" + event.clientY)
         console.log("id2 = " + event.target.id)
 
-        //TODO Прописать путь иначе?
-        let myTabTest = $('div#editUserForm');
-        myTabTest.empty();
+        let number = Number(event.target.className)
+        showOneUsers(number)
+
+
     }
 
     $("#load").bind("click", function () {

@@ -105,40 +105,34 @@
                 </tr>
               </tbody>
                 <!--TODO сделать ID плавающим или ещё чего -->
-                <div class="modal fade" id="editUserForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="editUserFormDiv" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" th:id="${user.getId()}+'-Label'">Edit user</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                             </div>
-                            <div class="modal-body">
+                            <div id="editUserForm" class="modal-body">
                                 <form th:method="POST" th:action="@{/{id}(id=${user.getId()})}" th:object="${user}" >
                                     <label for="id">ID</label>
                                     <fieldset disabled>
                                         <input type="text" class="form-control" id="id" th:value="${user.getId()}" />
                                     </fieldset>
-                                    <div style="color:red" th:if="${#fields.hasErrors('id')}" th:errors="*{id}">id Error</div>
                                     <br/>
                                     <label for="firstName">First name</label>
-                                    <input type="text" class="form-control" id="firstName" name="firstName" th:value="*{firstName}">
-                                    <div style="color:red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First Name Error</div>
+                                    <input type="text" class="form-control" id="firstName" name="firstName" value="*{firstName}">
                                     <br/>
                                     <label for="lastName">Last name</label>
-                                    <input type="text" class="form-control" th:value="*{lastName}" name="lastName" id="lastName"/>
-                                    <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">last Name Error</div>
+                                    <input type="text" class="form-control" value="*{lastName}" name="lastName" id="lastName"/>
                                     <br/>
                                     <label for="email">Email</label>
-                                    <input type="email" class="form-control" th:value="*{email}" name="email" id="email"/>
-                                    <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
+                                    <input type="email" class="form-control" value="*{email}" name="email" id="email"/>
                                     <br/>
                                     <label for="username">Username</label>
-                                    <input type="text" class="form-control" th:value="*{username}" name="username" id="username"/>
-                                    <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</div>
+                                    <input type="text" class="form-control" value="*{username}" name="username" id="username"/>
                                     <br/>
                                     <label for="password">Password</label>
-                                    <input type="text" class="form-control" th:value="*{password}" name="password" id="password"/>
-                                    <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
+                                    <input type="text" class="form-control" value="*{password}" name="password" id="password"/>
                                     <br/>
                                     <div class="form-group">
                                         <label class="col-form-label" for="roleAdd2">Role</label>
@@ -169,7 +163,8 @@
 
               <p id="load" style="cursor:pointer">Загрузить данные</p><br />
 <!--              <button type="submit" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#22" data-bs-whatever="@mdo" id="edit_Button" >Edit</button><br />-->
-              <input type="button" onclick="eventUser()" id="edit_Button" value="Event" />
+<!--              <input type="button" data-bs-target="#editUserFormDiv" onclick="eventUser()" id="edit_Button" value="Event" />-->
+              <button type="submit" class="22" data-bs-toggle="modal" data-bs-target="#editUserFormDiv" data-bs-whatever="@mdo" onclick="eventUser()" id="edit_Button" >Edit</button>
               <input type="button" onclick="eventUser()" id="elem" value="Event" />
               <br />
               <div id="information"></div>
@@ -180,6 +175,7 @@
                   <input type="text" id="user_lastName" placeholder="Name" /><br />
                   <input type="text" id="user_userEmail" placeholder="Name" /><br />
                   <input type="button" id="save_User" value="Save" /><br />
+                  <input type="button" id="update_User" value="Update" /><br />
               </form>
 
                   <button type="button" class="btn btn-info" data-bs-toggle="modal" th:data-bs-target="'#'+${user.getId()}" data-bs-whatever="@mdo">Edit</button>
