@@ -108,7 +108,7 @@ function showUsersOnTable() {
                         <td>' + users[i].email + '</td>\
                         <td>' + userRole(users[i].userRoles) + '</td>\
                         <td id="users[i].id" >\
-                        <button type="submit" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editUserFormDiv" data-bs-whatever="@mdo" onclick="eventUser()" id="edit_Button" >Edit</button>\
+                        <button type="submit" class="btn btn-info close-task" data-bs-toggle="modal" data-bs-target="#editUserFormDiv" data-bs-whatever="@mdo" onclick="eventUser()" id="'+ users[i].id +'" >Edit</button>\
                         <!-- <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#' + users[i].id +'" data-bs-whatever="@mdo" id="edit_Button" >Edit</button>\ \
                         <button type="submit" class="btn btn-primary" id="add_new_User">Add new user</button>-->\
                         </td>\
@@ -301,6 +301,7 @@ $(document).ready (function () {
         console.log("Coordinate is " + event.clientX + ":" + event.clientY)
         console.log("id2 = " + event.target.id)
 
+        // let number = Number(event.target.id)
         let number = Number(event.target.className)
         showOneUsers(number)
 
@@ -324,6 +325,24 @@ $(document).ready (function () {
             console.log("edit_button_bind")
         }
     )
+//TODO Well done
+    function closeTask() {
+        console.log("function closeTask")
+    }
+
+    $(document).on('click', ".close-task", closeTask, function (event) {
+        // вывести тип события, элемент и координаты клика
+        console.log("edit_Button.click = function")
+        console.log(event.type + " on " + event.currentTarget)
+        console.log("Coordinate is " + event.clientX + ":" + event.clientY)
+        console.log("id2 = " + event.target.id)
+
+        let number = Number(event.target.id)
+        // let number = Number(event.target.className)
+        showOneUsers(number)
+
+
+    })
 
 
 })
