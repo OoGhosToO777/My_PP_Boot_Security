@@ -109,10 +109,13 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
+                                <!--               TODO                 Удалить ID?-->
                                 <h1 class="modal-title fs-5" th:id="${user.getId()}+'-Label'">Edit user</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                             </div>
                             <div id="editUserForm" class="modal-body">
+                                <!--                TODO                Удалить все от сюда?-->
+
                                 <form th:method="POST" th:action="@{/{id}(id=${user.getId()})}" th:object="${user}" >
                                     <label for="id">ID</label>
                                     <fieldset disabled>
@@ -155,6 +158,55 @@
                         </div>
                     </div>
                 </div>
+
+                        <div class="modal fade" id="deleteUserFormDiv" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <!--                TODO        создать метод, что цепляется за этот id deleteUserForm-->
+                                    <div class="modal-header">
+                                        <!--                 TODO               Удалить ID?-->
+                                        <h1 class="modal-title fs-5" th:id="${user.getId()}+'-Label'">Delete user</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                                    </div>
+                                    <div id="deleteUserForm" class="modal-body">
+                                        <!--                TODO                Удалить все от сюда?-->
+                                        <form th:method="POST" th:action="@{/{id}(id=${user.getId()})}" th:object="${user}" >
+                                            <fieldset disabled>
+                                                <label for="id-delete">ID</label>
+                                                <input type="text" class="form-control" id="id-delete" th:value="${user.getId()}" />
+                                                <div style="color:red" th:if="${#fields.hasErrors('id')}" th:errors="*{id}">id Error</div>
+                                                <br/>
+                                                <label for="firstName-delete">First name</label>
+                                                <input type="text" class="form-control" th:value="*{firstName}" id="firstName-delete" />
+                                                <div style="color:red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First Name Error</div>
+                                                <br/>
+                                                <label for="lastName-delete">Last name</label>
+                                                <input type="text" class="form-control" th:value="*{lastName}" id="lastName-delete"/>
+                                                <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">last Name Error</div>
+                                                <br/>
+                                                <label for="email-delete">Email</label>
+                                                <input type="email" class="form-control" th:value="*{email}" id="email-delete"/>
+                                                <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
+                                                <br/>
+                                                <label for="username-delete">Username</label>
+                                                <input type="text" class="form-control" th:value="*{username}" id="username-delete"/>
+                                                <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</div>
+                                                <br/>
+                                                <label for="password-delete">Password</label>
+                                                <input type="text" class="form-control" th:value="*{password}" id="password-delete"/>
+                                                <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
+                                            </fieldset>
+                                            <br/>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <a class="btn btn-danger" th:href="@{/admin/delete/{id}(id=${user.getId()})}" role="button">Delete</a>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
 
             </table>
 

@@ -1,6 +1,7 @@
 package ru.spring.boot_security.controller;
 
 import org.springframework.web.bind.annotation.*;
+import ru.spring.boot_security.model.Role;
 import ru.spring.boot_security.model.User;
 import ru.spring.boot_security.service.RoleService;
 import ru.spring.boot_security.service.UserService;
@@ -22,6 +23,11 @@ public class RestUsersController {
     @GetMapping(path = "/users")
     public List<User> showAllUsers() {
         return userService.showAllUsers();
+    }
+
+    @GetMapping(path = "/roles")
+    public List<Role> showAllRoles() {
+        return roleService.showAllRoles();
     }
 
     @GetMapping(path = "/users/{id}")
