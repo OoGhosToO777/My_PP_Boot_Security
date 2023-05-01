@@ -31,6 +31,7 @@ const API = function() {
                     firstName: $("#exampleInputFirstName").val(),
                     lastName: $("#exampleInputLastName").val(),
                     email: $("#exampleInputEmail1").val(),
+                    username: $("#exampleInputUsername").val(),
                     password: $("#exampleInputPassword1").val(),
                     userRoles: roles2
                 }),
