@@ -15,6 +15,14 @@ const API = function() {
             $.get("/users", param)
         },
         addNewUser: function (user, param) {
+            let roles2 = $("#roleAdd option:selected").map(function() {
+                return {
+                    roleId: $(this).attr("id"),
+                    roleName: $(this).val(),
+                    authority: $(this).val()
+                };
+            }).get();
+
             $.ajax({
                 url: '/users',
                 type: 'POST',
@@ -23,8 +31,8 @@ const API = function() {
                     firstName: $("#exampleInputFirstName").val(),
                     lastName: $("#exampleInputLastName").val(),
                     email: $("#exampleInputEmail1").val(),
-                    password: $("#exampleInputPassword1").val()
-                    // ,userRoles: $("#roleAdd").val()
+                    password: $("#exampleInputPassword1").val(),
+                    userRoles: roles2
                 }),
                 success: function () {
                     console.log("Save Complete")
@@ -44,6 +52,58 @@ const API = function() {
         */
         updateUser: function () {
 
+        console.log($("select#roleAdd2").val())
+        console.log($("select#roleAdd2"))
+        console.log($("select#roleAdd2").toArray())
+
+        let test = $("select#roleAdd2").toArray()
+        console.log(test[0])
+        console.log(test[0].innerHTML)
+        console.log(test[0].innerText)
+        console.log(test[0][0].innerText)
+        // console.log(test[0][1].innerText)
+        //
+        // console.log("Dont care")
+        // console.log(test[0].innerText)
+        // console.log(test[0].outerText)
+        // console.log(test[1].outerText)
+        // console.log(test[0].text)
+        // console.log(test[0].textContent)
+
+        //
+        // let test1111 = $("select#roleAdd2").toArray()[0][1].innerText
+        // console.log("test1111")
+        // console.log(test1111)
+        console.log($("#exampleInputFirstName").val())
+        //TODO !!!!!! На основе разницы того что получается в этих двух строках понять что мне надо чтобы получить массив ролей
+        console.log($("#user_firstName").val())
+        console.log($("#user_firstName"))
+
+        let formData = $("form#editUserForm").serializeArray();
+        console.log(formData)
+        let data = {};
+        $(formData ).each(function(index, obj){
+            data[obj.name] = obj.value;
+        });
+        let jsonData = JSON.stringify(data);
+        console.log(jsonData);
+
+            let roles = $("#roleAdd2").val().map(function(role) {
+                return { roleName: role, authority: role };
+            });
+
+            let roles2 = $("#roleAdd2 option:selected").map(function() {
+                return {
+                    roleId: $(this).attr("id"),
+                    roleName: $(this).val(),
+                    authority: $(this).val()
+                };
+            }).get();
+
+
+            console.log(roles)
+            console.log(roles2)
+
             $.ajax({
                 url: '/users',
                 dataType: 'json',
@@ -58,7 +118,7 @@ const API = function() {
                     username: $("#user_userName").val(),
                     password: $("#user_password").val(),
                     //TODO Если выбрать любую роль из списка - ошибка
-                    userRoles: $("select#roleAdd2").val()
+                    userRoles: roles2
                 }),
                 success: function () {
                     console.log("Update_User (function updateUser())")
@@ -217,6 +277,16 @@ function deleteUser() {
 }
 
 $(document).ready (function () {
+    testRoles("roleAdd")
+
+    const form = document.getElementById('editUserForm');
+    const button = document.getElementById('update_User');
+
+    button.addEventListener('click', function(event) {
+        event.preventDefault(); // предотвращаем перезагрузку страницы
+        updateUser();
+    });
+
     showUsersOnTable()
     user_firstName = $('#user_firstName')
     save_User = $('#save_User')
@@ -274,10 +344,10 @@ $(document).ready (function () {
 
 
             //TODO Прописать путь иначе?
-            let myForm = $('div#editUserForm');
+            let myForm = $('div#1editUserForm');
             myForm.empty();
             myForm.append('\n' +
-                '<form>\n' +
+                '<form id="editUserForm">\n' +
                 '    <label for="id">ID</label>\n' +
                 '    <fieldset disabled>\n' +
                 '        <input type="text" class="form-control" value="' + formUser.id + '" id="user_id"/>\n' +
@@ -298,47 +368,37 @@ $(document).ready (function () {
                 '    <label for="password">Password</label>\n' +
                 '    <input type="text" class="form-control" value="' + formUser.password + '" name="password" id="user_password"/>\n' +
                 '    <br/>\n' +
-                '    <div class="form-group">\n' +
-                '        <label class="col-form-label" for="roleAdd2">Role</label>\n' +
-                '        <select class="custom-select form-control" multiple name="roles" th:field="*{userRoles}" id="roleAdd2">\n' +
-                '            <option th:each="oneRole: ${roles}"\n' +
-                '                    th:selected="' + formUser.userRoles + '}"\n' +
-                '                    th:text="' + formUser.userRoles + '}"\n' +
-                '                    th:value="' + formUser.userRoles + '}"\n' +
-                '            >all roles\n' +
-                '            </option>\n' +
-                '        </select>\n' +
-                '    </div>\n' +
+                '    <div class="form-group"><label class="col-form-label" for="roleAdd2">Role</label>' +
+                '<select class="custom-select form-control" multiple="" name="userRoles" id="roleAdd2">' +
+                '</select></div>\n' +
                 '    <div class="modal-footer">\n' +
                 '        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>\n' +
-                '        <button type="button" class="btn btn-primary" id="update_User" onclick="updateUser()">Edit</button>\n' +
+                '        <button type="button" class="btn btn-primary" id="update_User" onclick="updateUser()" data-bs-dismiss="modal" >Edit</button>\n' +
                 '    </div>\n' +
                 '</form>')
 
+            testRoles("roleAdd2")
         });
 
-        testRoles()
 
     }
 
-    function testRoles() {
+    function testRoles(selectForm) {
         $.get('/roles', function (data) {
             console.log(data)
+            console.log("testRoles()")
             // TODO Выдает то что нужно - список ролей
             console.log(data[1].roleName)
             console.log(data[0].roleName)
+            let select = document.getElementById(selectForm);
+            data.forEach(function(option) {
+                let optionElement = document.createElement("option");
+                optionElement.value = option.roleName;
+                optionElement.id = option.roleId;
+                optionElement.text = option.roleName;
+                select.add(optionElement);
+            });
 
-            let table = "<div class=\"form-group\"><label class=\"col-form-label\" for=\"roleAdd2\">Role</label><input type=\"hidden\" name=\"_userRoles\" value=\"1\"><select class=\"custom-select form-control\" multiple=\"\" name=\"userRoles\" id=\"roleAdd2\">";
-            //TODO Не сразу подтягивается
-            for (i = 0; i < data.length; i++) {
-                table = table + "<option value=\"" + Number(i+1) + "\">" + data[i].roleName + "</option>"
-            }
-
-            table = table + "</select></div>";
-
-            $(".form-group").html(table)
-            $(document).on(".form-group").html(table)
-            // $(document).className(".form-group").html(table)
         })
     }
 
@@ -390,7 +450,7 @@ $(document).ready (function () {
                 '    <br/>\n' +
                 '    <div class="modal-footer">\n' +
                 '        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>\n' +
-                '        <button type="button" class="btn btn-danger" id="delete_User" onclick="deleteUser()">Delete</button>\n' +
+                '        <button type="button" class="btn btn-danger" id="delete_User" onclick="deleteUser()" data-bs-dismiss="modal">Delete</button>\n' +
                 '    </div>\n' +
                 '</form>')
 
@@ -445,6 +505,14 @@ $(document).ready (function () {
         showOneUserForEditForm(number)
     })
 
+    $(document).on('click', "#update_User", closeTask, function (event) {
+        const form = document.getElementById('editUserForm');
+        const button = document.getElementById('update_User');
+
+            event.preventDefault(); // предотвращаем перезагрузку страницы
+        });
+
+
     function deleteTask() {
         console.log("function closeTask")
     }
@@ -489,5 +557,13 @@ $(document).ready (function () {
         return arr
     }
 
-
+    $("#update_User").click(function() {
+        let formData = $("form").serializeArray();
+        let data = {};
+        $(formData ).each(function(index, obj){
+            data[obj.name] = obj.value;
+        });
+        let jsonData = JSON.stringify(data);
+        console.log(jsonData);
+    });
 })

@@ -29,10 +29,10 @@
 <!--      Header-->
       <nav class="navbar navbar-expand-lg" style="background-color: #343a40;">
           <div class="container-fluid">
-              <div class="collapse navbar-collapse" id="navbarSupportedContent" th:each="user : ${authenticationUser}">
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav me-auto mb-2 mb-lg-0 white-text">
                       <li class="nav-item">
-                          <a class="nav-link" style="font-weight: bold;" th:text="${user.getEmail()}">
+                          <a class="nav-link" style="font-weight: bold;">
                               *UserEmail*
                           </a>
                       </li>
@@ -42,7 +42,7 @@
                           </a>
                       </li>
                       <li class="nav-item dropdown">
-                          <a class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${#strings.listJoin(user.getUserRoles(), ', ')}">
+                          <a class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                               *ListRoles*
                           </a>
                       </li>
@@ -59,9 +59,9 @@
       <div class="col-2">
         <div class="container-xxl">
 <!--            Menu-->
-            <ul class="nav flex-column nav-pills" th:each="user : ${authenticationUser}">
+            <ul class="nav flex-column nav-pills">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:classappend="${user.getUserRoles().toString().contains('ADMIN')} ? '' : 'd-none'" href="/admin">Admin</a>
+                    <a class="nav-link active" aria-current="page" href="/admin">Admin</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/user">User</a>
@@ -110,43 +110,34 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <!--               TODO                 Удалить ID?-->
-                                <h1 class="modal-title fs-5" th:id="${user.getId()}+'-Label'">Edit user</h1>
+                                <h1 class="modal-title fs-5">Edit user</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                             </div>
-                            <div id="editUserForm" class="modal-body">
+                            <div id="1editUserForm" class="modal-body">
                                 <!--                TODO                Удалить все от сюда?-->
 
-                                <form th:method="POST" th:action="@{/{id}(id=${user.getId()})}" th:object="${user}" >
-                                    <label for="id">ID</label>
-                                    <fieldset disabled>
-                                        <input type="text" class="form-control" id="id" th:value="${user.getId()}" />
-                                    </fieldset>
+                                <form id="editUserForm" th:method="POST" th:action="@{/{id}(id=${user.getId()})}" th:object="${user}" >
+                                    <label for="user_id">ID</label>
+                                        <input type="text" class="form-control" id="user_id"/>
                                     <br/>
-                                    <label for="firstName">First name</label>
-                                    <input type="text" class="form-control" id="firstName" name="firstName" value="*{firstName}">
+                                    <label for="user_firstName">First name</label>
+                                    <input type="text" class="form-control" id="user_firstName" name="firstName" value="*{firstName}">
                                     <br/>
-                                    <label for="lastName">Last name</label>
-                                    <input type="text" class="form-control" value="*{lastName}" name="lastName" id="lastName"/>
+                                    <label for="user_lastName">Last name</label>
+                                    <input type="text" class="form-control" value="*{lastName}" name="lastName" id="user_lastName"/>
                                     <br/>
-                                    <label for="email">Email</label>
-                                    <input type="email" class="form-control" value="*{email}" name="email" id="email"/>
+                                    <label for="user_userEmail">Email</label>
+                                    <input type="email" class="form-control" value="*{email}" name="email" id="user_userEmail"/>
                                     <br/>
-                                    <label for="username">Username</label>
-                                    <input type="text" class="form-control" value="*{username}" name="username" id="username"/>
+                                    <label for="user_userName">Username</label>
+                                    <input type="text" class="form-control" value="*{username}" name="username" id="user_userName"/>
                                     <br/>
-                                    <label for="password">Password</label>
-                                    <input type="text" class="form-control" value="*{password}" name="password" id="password"/>
+                                    <label for="user_password">Password</label>
+                                    <input type="text" class="form-control" value="*{password}" name="password" id="user_password"/>
                                     <br/>
                                     <div class="form-group">
                                         <label class="col-form-label" for="roleAdd2">Role</label>
-                                        <select class="custom-select form-control" multiple name="roles" th:field="*{userRoles}" id="roleAdd2">
-                                            <option th:each="oneRole: ${roles}"
-                                                    th:selected="${oneRole.roleName == 'USER'}"
-                                                    th:text="${oneRole.roleName}"
-                                                    th:value="${oneRole.roleId}"
-                                            >all roles
-                                            </option>
-                                        </select>
+                                        <select class="custom-select form-control" multiple name="roles" th:field="*{userRoles}" id="roleAdd2"></select>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -165,36 +156,36 @@
                                     <!--                TODO        создать метод, что цепляется за этот id deleteUserForm-->
                                     <div class="modal-header">
                                         <!--                 TODO               Удалить ID?-->
-                                        <h1 class="modal-title fs-5" th:id="${user.getId()}+'-Label'">Delete user</h1>
+                                        <h1 class="modal-title fs-5">Delete user</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                                     </div>
                                     <div id="deleteUserForm" class="modal-body">
                                         <!--                TODO                Удалить все от сюда?-->
-                                        <form th:method="POST" th:action="@{/{id}(id=${user.getId()})}" th:object="${user}" >
+                                        <form>
                                             <fieldset disabled>
                                                 <label for="id-delete">ID</label>
-                                                <input type="text" class="form-control" id="id-delete" th:value="${user.getId()}" />
-                                                <div style="color:red" th:if="${#fields.hasErrors('id')}" th:errors="*{id}">id Error</div>
+                                                <input type="text" class="form-control" id="id-delete"/>
+                                                <div style="color:red">id Error</div>
                                                 <br/>
                                                 <label for="firstName-delete">First name</label>
-                                                <input type="text" class="form-control" th:value="*{firstName}" id="firstName-delete" />
-                                                <div style="color:red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First Name Error</div>
+                                                <input type="text" class="form-control" id="firstName-delete" />
+                                                <div style="color:red">First Name Error</div>
                                                 <br/>
                                                 <label for="lastName-delete">Last name</label>
-                                                <input type="text" class="form-control" th:value="*{lastName}" id="lastName-delete"/>
-                                                <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">last Name Error</div>
+                                                <input type="text" class="form-control" id="lastName-delete"/>
+                                                <div style="color:red">last Name Error</div>
                                                 <br/>
                                                 <label for="email-delete">Email</label>
-                                                <input type="email" class="form-control" th:value="*{email}" id="email-delete"/>
-                                                <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
+                                                <input type="email" class="form-control" id="email-delete"/>
+                                                <div style="color:red">Email Error</div>
                                                 <br/>
                                                 <label for="username-delete">Username</label>
-                                                <input type="text" class="form-control" th:value="*{username}" id="username-delete"/>
-                                                <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</div>
+                                                <input type="text" class="form-control" id="username-delete"/>
+                                                <div style="color:red">Username Error</div>
                                                 <br/>
                                                 <label for="password-delete">Password</label>
-                                                <input type="text" class="form-control" th:value="*{password}" id="password-delete"/>
-                                                <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
+                                                <input type="text" class="form-control" id="password-delete"/>
+                                                <div style="color:red">Password Error</div>
                                             </fieldset>
                                             <br/>
                                             <div class="modal-footer">
@@ -223,10 +214,10 @@
               <div id="information"></div>
 
               <form>
-                  <input type="text" id="user_id" placeholder="ID" /><br />
-                  <input type="text" id="user_firstName" placeholder="Name" /><br />
-                  <input type="text" id="user_lastName" placeholder="Name" /><br />
-                  <input type="text" id="user_userEmail" placeholder="Name" /><br />
+                  <input type="text" id="1user_id" placeholder="ID" /><br />
+                  <input type="text" id="1user_firstName" placeholder="Name" /><br />
+                  <input type="text" id="1user_lastName" placeholder="Name" /><br />
+                  <input type="text" id="1user_userEmail" placeholder="Name" /><br />
                   <input type="button" id="save_User" value="Save" /><br />
                   <input type="button" id="update_User" value="Update" /><br />
               </form>
@@ -258,16 +249,7 @@
 
                       <label class="col-form-label" for="roleAdd">Role</label>
 
-                      <select class="custom-select form-control" multiple name="roles"  id="roleAdd">
-
-                          <option th:each="oneRole: ${roles}"
-                                  th:selected="${oneRole.roleName == 'USER'}"
-                                  th:text="${oneRole.roleName}"
-                                  th:value="${oneRole.roleId}"
-                          >all roles
-                          </option>
-
-                      </select>
+                      <select class="custom-select form-control" multiple name="roles"  id="roleAdd"></select>
 
                   </div>
                   <br/>
