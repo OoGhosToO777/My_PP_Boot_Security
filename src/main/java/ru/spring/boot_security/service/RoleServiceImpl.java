@@ -19,4 +19,5 @@ public class RoleServiceImpl implements RoleService {
     public List<Role> showAllRoles() {
         return roleRepository.findAll();
     }
+
 }

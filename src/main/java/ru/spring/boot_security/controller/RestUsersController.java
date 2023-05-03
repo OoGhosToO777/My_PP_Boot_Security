@@ -1,11 +1,19 @@
 package ru.spring.boot_security.controller;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.spring.boot_security.model.Role;
 import ru.spring.boot_security.model.User;
 import ru.spring.boot_security.service.RoleService;
 import ru.spring.boot_security.service.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
 @RequestMapping
@@ -13,6 +21,7 @@ import java.util.List;
 public class RestUsersController {
 
     private final UserService userService;
+
     private final RoleService roleService;
 
     public RestUsersController(UserService userService, RoleService roleService) {
@@ -30,28 +39,32 @@ public class RestUsersController {
         return roleService.showAllRoles();
     }
 
+    @GetMapping("/user/auth")
+    public User index(Principal principal) {
+        return userService.findUserByUsername(principal.getName());
+    }
+
     @GetMapping(path = "/users/{id}")
-    public User showOneUser(@PathVariable int id) {
+    public User showOneUser(@PathVariable Integer id) {
         return userService.showUser(id);
     }
 
     @PostMapping(path = "/users")
-    public @ResponseBody User addNewUser(@RequestBody User user) {
+    public User addNewUser(@RequestBody User user) {
         userService.saveUser(user);
         return user;
     }
 
     @PutMapping(path = "/users")
-    public @ResponseBody User updateUser(@RequestBody User user) {
+    public User updateUser(@RequestBody User user) {
         userService.saveUser(user);
         return user;
     }
 
     @DeleteMapping(path = "/users/{id}")
-    public String deleteUser(@PathVariable int id) {
+    public boolean deleteUser(@PathVariable Integer id) {
         userService.deleteUser(id);
-//        return String.format("User with ID = %f is deleted", id);
-        return "Delete complete";
+        return true;
     }
 
 }
